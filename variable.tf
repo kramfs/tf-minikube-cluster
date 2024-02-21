@@ -7,7 +7,7 @@ variable "driver" {
 variable "cluster_name" {
   description = "Minikube cluster_name"
   type        = string
-  default     = "tf-minikube-docker"
+  default     = "minikube"
 }
 
 variable "cpus" {
@@ -52,5 +52,5 @@ variable "wait" {
 variable "kubernetes_version" {
   description = "Kubernetes version"
   type        = string
-  #default     = "v.latest" # See available options: minikube config defaults kubernetes-version
+  #default     = "v1.29.1" # See available options: "minikube config defaults kubernetes-version" or refer to: https://kubernetes.io/releases/
 }
