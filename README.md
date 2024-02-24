@@ -1,5 +1,5 @@
 # Description
-This mini-project provides a powerful yet easy-to-use development environment for Kubernetes on your local machine:. This can be used as a template imported as a Terraform/OpenTofu module to easily bring up a minikube cluster. 
+This mini-project provides a powerful yet easy-to-use development environment for Kubernetes on your local machine:. This can be imported as a Terraform/OpenTofu module to easily bring up a minikube cluster.
 
 * Leverages Terraform and the [Minikube provider](https://registry.terraform.io/providers/scott-the-programmer/minikube/latest/docs) for seamless cluster management.
 * Modular and customizable: Built with Minikube and Docker, but configurable to fit your preferences.
