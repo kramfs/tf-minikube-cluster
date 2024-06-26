@@ -6,11 +6,23 @@
 ## TERRAFORM DEFINITION ##
 terraform {
   required_providers {
+    ## Ref: https://registry.terraform.io/providers/scott-the-programmer/minikube/latest/docs
+    ## Ref: https://github.com/scott-the-programmer/terraform-provider-minikube
     minikube = {
       source  = "scott-the-programmer/minikube"
-      version = "~>0.3" # Good practice to pin to a specific provider version
+      version = "~>0.3" # Good practice to pin to a specific provider version or lineage
     }
   }
+
+  ## STATE BACKEND
+  # HCP: Hashicorp Cloud
+  #cloud {
+  #  organization = ""
+  #  workspaces {
+  #    name = ""
+  #  }
+  #}
+
 }
 
 ## PROVIDER ##

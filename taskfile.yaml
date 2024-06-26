@@ -1,0 +1,55 @@
+version: '3'
+
+tasks:
+  default:
+    desc: "Show this list"
+    cmds:
+      - task --list-all
+
+  init:
+    internal: false
+    desc: "Run Terraform Init"
+    cmds:
+      - terraform init $PARAMETER
+    env:
+      PARAMETER: -upgrade
+
+  plan:
+    desc: "Run Terraform Plan"
+    cmds:
+      - terraform plan $PARAMETER
+
+  apply:
+    desc: "Run Terraform Apply"
+    cmds:
+      - terraform apply $PARAMETER
+    env:
+      PARAMETER: --auto-approve
+
+  create_cluster:
+    internal: false
+    desc: "Run Terraform Init and Create the cluster"
+    cmds:
+      - task: init
+      - task: apply
+
+  destroy:
+    internal: false
+    desc: "Run Terraform Destroy"
+    #preconditions:
+    #  # Fail when terraform is not yet initialized
+    #  - sh: if [ ! -a "./.terraform.lock.hcl" ]; then
+    #          return 1
+    #        fi
+    #    msg: "Make sure that terraform is initialized first by running 'terraform init'"
+    cmds:
+      - terraform destroy $PARAMETER
+    env:
+      PARAMETER: --auto-approve
+
+  cleanup:
+    desc: "Terminate and perform cleanup of the cluster"
+    cmds:
+      - task: destroy
+      #- rm -Rvf .terraform terraform.* .terraform.lock.hcl
+      - find . -name '*terraform*' -print | xargs rm -Rf
