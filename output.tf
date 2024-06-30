@@ -25,3 +25,7 @@ output "minikube_cluster_ca_certificate" {
 output "minikube_cluster_dns_domain" {
   value = minikube_cluster.docker.dns_domain
 }
+
+output "minikube_cluster_kubernetes_version" {
+  value = minikube_cluster.docker.kubernetes_version
+}
