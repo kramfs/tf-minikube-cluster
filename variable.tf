@@ -52,5 +52,5 @@ variable "wait" {
 variable "kubernetes_version" {
   description = "Kubernetes version"
   type        = string
-  #default     = "v1.30.0" # See available options: "minikube config defaults kubernetes-version" or refer to: https://kubernetes.io/releases/
+  #default     = "v1.30.2" # See available options: "minikube config defaults kubernetes-version" or refer to: https://kubernetes.io/releases/
 }
