@@ -35,7 +35,7 @@ resource "minikube_cluster" "docker" {
   driver            = var.driver
   cluster_name      = var.cluster_name
   #kubernetes_version  = lookup(var.kubernetes_version, "kubernetes_version", null)
-  #kubernetes_version  = contains([var.kubernetes_version], "default") ? var.kubernetes_version.default : null
+  kubernetes_version  = contains([var.kubernetes_version], "default") ? var.kubernetes_version.default : null
   cpus              = var.cpus
   memory            = var.memory
   nodes             = var.nodes
