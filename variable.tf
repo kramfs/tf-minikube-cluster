@@ -31,7 +31,7 @@ variable "nodes" {
 variable "container_runtime" {
   description = "The container runtime to be used"
   type        = string
-  default     = "containerd"
+  default     = "docker"  # Options: docker, containerd, cri-o
 }
 
 variable "addons" {
