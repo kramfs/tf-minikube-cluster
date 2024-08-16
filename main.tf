@@ -2,6 +2,7 @@
 ## MINIKUBE ##
 ##############
 # Description: Provision a local minikube cluster for that can be used for local development
+# URL: https://github.com/kramfs/tf-minikube-cluster
 
 ## TERRAFORM DEFINITION ##
 terraform {
