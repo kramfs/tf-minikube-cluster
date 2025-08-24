@@ -2,13 +2,13 @@
 # Place this in a higher-level module that currently uses a map and wants to call the new typed interface.
 
 variable "minikube" {
-  type = map(any)
+  type    = map(any)
   default = {}
 }
 
 # Convert optional numeric-like values: prefer numeric keys if present, otherwise convert legacy strings
 locals {
-  cpus_num  = contains(keys(var.minikube), "cpus_num") && var.minikube["cpus_num"] != 0 ? var.minikube["cpus_num"] : (
+  cpus_num = contains(keys(var.minikube), "cpus_num") && var.minikube["cpus_num"] != 0 ? var.minikube["cpus_num"] : (
     contains(keys(var.minikube), "cpus") ? tonumber(var.minikube["cpus"]) : 0
   )
 
@@ -24,10 +24,10 @@ locals {
 module "minikube_cluster" {
   source = "./.."
 
-  cluster_name = lookup(var.minikube, "cluster_name", "minikube")
-  driver       = lookup(var.minikube, "driver", "docker")
+  cluster_name       = lookup(var.minikube, "cluster_name", "minikube")
+  driver             = lookup(var.minikube, "driver", "docker")
   kubernetes_version = lookup(var.minikube, "kubernetes_version", null)
-  container_runtime   = lookup(var.minikube, "container_runtime", "containerd")
+  container_runtime  = lookup(var.minikube, "container_runtime", "containerd")
 
   # Pass numeric wrappers when available
   cpus_num  = local.cpus_num

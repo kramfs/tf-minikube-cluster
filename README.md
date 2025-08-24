@@ -21,6 +21,31 @@ module "minikube_cluster" {
 }
 ```
 
+Notes on kubernetes_version and defaults
+- The module accepts `kubernetes_version` in several shapes:
+  - a plain string prefixed with `v` (e.g. `v1.33.4`)
+  - a plain numeric-like string (e.g. `1.33.4`) — the module will automatically normalize this to `v1.33.4`.
+  - an object with a `.default` field (some wrappers supply this) — the module extracts `.default`.
+- If you do not supply `kubernetes_version` you can opt into using the latest upstream Kubernetes by setting `use_latest_kubernetes = true` (default is false). This avoids unexpected upgrades unless explicitly requested.
+
+Examples
+- Passing a numeric string (module will normalize):
+
+```
+module "minikube_cluster" {
+  source             = "github.com/kramfs/tf-minikube-cluster"
+  kubernetes_version = "1.33.4"    # normalized to "v1.33.4"
+}
+```
+
+- Let the provider pick the latest (opt-in):
+
+```
+module "minikube_cluster" {
+  source                   = "github.com/kramfs/tf-minikube-cluster"
+  use_latest_kubernetes    = true
+}
+```
 Alternatively, add the values to your `main.auto.tfvars`
 
 # Migration notes

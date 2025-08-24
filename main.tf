@@ -50,8 +50,20 @@ resource "minikube_cluster" "docker" {
 
 locals {
   # kubernetes_version may be either a string or an object with `.default`.
-  # Use can(...) to test access safely and fall back to using the string value.
-  kubernetes_version = can(var.kubernetes_version.default) ? var.kubernetes_version.default : (
-    (var.kubernetes_version != "" && var.kubernetes_version != null) ? var.kubernetes_version : null
+  # Normalization rules:
+  # - If caller provided an object with `.default`, use that.
+  # - If caller provided a plain string, accept either "1.33.4" or "v1.33.4" and normalize to the latter.
+  # - If caller left it empty and `var.use_latest_kubernetes` is true, return "latest" so provider can choose.
+  # - Otherwise return null (provider default applies).
+  raw_kubernetes_version = can(var.kubernetes_version.default) ? var.kubernetes_version.default : (
+    (var.kubernetes_version != "" && var.kubernetes_version != null) ? var.kubernetes_version : ""
+  )
+
+  kubernetes_version = (
+    length(trimspace(local.raw_kubernetes_version)) > 0 ? (
+      startswith(local.raw_kubernetes_version, "v") ? local.raw_kubernetes_version : "v${local.raw_kubernetes_version}"
+      ) : (
+      var.use_latest_kubernetes ? "latest" : null
+    )
   )
 }
