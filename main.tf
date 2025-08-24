@@ -29,17 +29,29 @@ terraform {
 ## PROVIDER ##
 provider "minikube" {
   # Commenting the following will default to using the current stable version
-  kubernetes_version = var.kubernetes_version
+  # Support callers that pass either a plain string ("v1.28.3") or an object
+  # with a `.default` key (some higher-level modules do this).
+  # Compute a concrete value in `local.kubernetes_version` (null when unset).
+  kubernetes_version = local.kubernetes_version
 }
 
 resource "minikube_cluster" "docker" {
-  driver            = var.driver
-  cluster_name      = var.cluster_name
-  kubernetes_version  = contains([var.kubernetes_version], "default") ? var.kubernetes_version.default : null
-  cpus              = var.cpus
-  memory            = var.memory
-  nodes             = var.nodes
+  driver             = var.driver
+  cluster_name       = var.cluster_name
+  kubernetes_version = local.kubernetes_version
+  # Prefer new numeric variables if set (>0), otherwise fall back to legacy string vars.
+  cpus              = var.cpus_num > 0 ? tostring(var.cpus_num) : var.cpus
+  memory            = var.memory_mb > 0 ? format("%dmb", var.memory_mb) : var.memory
+  nodes             = var.nodes_num > 0 ? tostring(var.nodes_num) : var.nodes
   container_runtime = var.container_runtime
   addons            = var.addons
   wait              = var.wait
+}
+
+locals {
+  # kubernetes_version may be either a string or an object with `.default`.
+  # Use can(...) to test access safely and fall back to using the string value.
+  kubernetes_version = can(var.kubernetes_version.default) ? var.kubernetes_version.default : (
+    (var.kubernetes_version != "" && var.kubernetes_version != null) ? var.kubernetes_version : null
+  )
 }

@@ -16,10 +16,25 @@ variable "cpus" {
   default     = "2"
 }
 
+# New numeric wrapper: prefer this when calling the module from Terraform code.
+# If set to >0 it will take precedence over `cpus` string.
+variable "cpus_num" {
+  description = "(optional) Numeric CPUs value. When >0 this wins over `cpus` string for callers using typed vars."
+  type        = number
+  default     = 0
+}
+
 variable "memory" {
   description = "Minikube amoubnt of memory to allocate"
   type        = string
   default     = "4096mb"
+}
+
+# New numeric wrapper: memory in megabytes. When >0 this takes precedence and will be formatted as "<N>mb".
+variable "memory_mb" {
+  description = "(optional) Memory in megabytes. When >0 this wins over `memory` string."
+  type        = number
+  default     = 0
 }
 
 variable "nodes" {
@@ -28,10 +43,17 @@ variable "nodes" {
   default     = "1"
 }
 
+# New numeric wrapper for nodes
+variable "nodes_num" {
+  description = "(optional) Numeric nodes value. When >0 this wins over `nodes` string."
+  type        = number
+  default     = 0
+}
+
 variable "container_runtime" {
   description = "The container runtime to be used"
   type        = string
-  default     = "docker"  # Options: docker, containerd, cri-o
+  default     = "docker" # Options: docker, containerd, cri-o
 }
 
 variable "addons" {
