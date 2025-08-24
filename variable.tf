@@ -75,4 +75,22 @@ variable "kubernetes_version" {
   description = "Kubernetes version"
   type        = string
   #default     = "v1.30.2" # See available options: "minikube config defaults kubernetes-version" or refer to: https://kubernetes.io/releases/
+
+  validation {
+    condition = (
+      var.kubernetes_version == "" ||
+      var.kubernetes_version == "latest" ||
+      can(regex("^v[0-9].*", var.kubernetes_version)) ||
+      can(regex("^[0-9].*", var.kubernetes_version))
+    )
+    error_message = "kubernetes_version must be empty, 'latest', start with 'v', or be a numeric-like string such as '1.33.4'"
+  }
+}
+
+# When true and `kubernetes_version` is empty, the provider/minikube will attempt to use the latest
+# upstream Kubernetes version. Keep default = false to avoid unexpected upgrades in CI or callers.
+variable "use_latest_kubernetes" {
+  description = "(optional) When true and no kubernetes_version is supplied, use the provider's/latest Kubernetes version."
+  type        = bool
+  default     = false
 }
